@@ -1,5 +1,7 @@
 # Demo Elixir Phoenix
 
+<img src="README.png" alt="Elixir + Phoenix" style="width: 100%;"/>
+
 Demonstration of:
 
   * [Elixir programming language](https://elixir-lang.org)
