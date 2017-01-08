@@ -104,7 +104,7 @@ If you get this error:
 
 Then do troubleshooting here:
 
-  * https://github.com/sixarm/sixarm_itemgresql_help
+  * https://github.com/sixarm/sixarm_itempostgresql_help
 
 
 ## Run the server
@@ -169,4 +169,31 @@ Browse:
     http://localhost:4000/items
 
 You now see "Listing items" and "Name", "Description", "New item".
+
+
+## Change the logo
+
+Edit `web/static/css/phoenix.css`.
+
+Find the section with `.logo`:
+
+    .logo {
+      width: 519px;
+      height: 71px;
+      display: inline-block;
+      margin-bottom: 1em;
+      background-image: url("/images/phoenix.png");
+      background-size: 519px 71px;
+    }
+
+Change the logo image to anything you want:
+
+    .logo {
+      width: 400px;
+      height: 100px;
+      display: inline-block;
+      margin-bottom: 1em;
+      background-image: url("http://placehold.it/400x100");
+      background-size: 400px 100px;
+    }
 
