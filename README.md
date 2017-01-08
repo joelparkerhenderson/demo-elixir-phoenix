@@ -7,7 +7,7 @@ Demonstration of:
   * [Elixir programming language](https://elixir-lang.org)
   * [Erlang virual machine](https://www.erlang.org/)
   * [Phoenix web framework](www.phoenixframework.org/)
-  * [PostgresSQL database](https://postgresql.org)
+  * [ItemgresSQL database](https://itemgresql.org)
   * [Node.js JavaScript](https://nodejs.org/)
   * [Brunch HTML5 build tool](https://brunch.io/)
 
@@ -19,7 +19,7 @@ This README is a tutorial.
 See:
 
   * http://elixir-lang.org
-  * http://exponential.io/blog/2015/02/21/install-postgresql-on-mac-os-x-via-brew/
+  * http://exponential.io/blog/2015/02/21/install-itemgresql-on-mac-os-x-via-brew/
 
 Setup on macOS using brew:
 
@@ -27,8 +27,8 @@ Setup on macOS using brew:
     $ brew install elixir
     $ brew install erlang
     $ brew install node
-    $ brew install postgresql
-    $ brew services start postgresql
+    $ brew install itemgresql
+    $ brew services start itemgresql
     $ export PATH="$PATH:/usr/local/Cellar/elixir/1.3.2/bin"
 
 Setup on Ubuntu using apt:
@@ -77,8 +77,8 @@ Try running the app with Interactive Elixir:
 
 The default database configuration is:
 
-    username: "postgres",
-    password: "postgres",
+    username: "itemgres",
+    password: "itemgres",
     database: "demo_dev",
     hostname: "localhost",
 
@@ -104,7 +104,7 @@ If you get this error:
 
 Then do troubleshooting here:
 
-  * https://github.com/sixarm/sixarm_postgresql_help
+  * https://github.com/sixarm/sixarm_itemgresql_help
 
 
 ## Run the server
@@ -127,3 +127,46 @@ Then update Node, NPM, and brunch:
     $ brew install node --with-full-icu
     $ npm install -g npm
     $ npm install -g brunch
+
+
+## Generate a resource
+
+Generate all the code for a complete HTML resource: ecto migration, ecto model, controller, view, and templates. 
+
+    $ mix phoenix.gen.html Item items name:string description:string
+    * creating priv/repo/migrations/20150523120903_create_item.exs
+    * creating web/models/item.ex
+    * creating test/models/item_test.exs
+    * creating web/controllers/item_controller.ex
+    * creating web/templates/item/edit.html.eex
+    * creating web/templates/item/form.html.eex
+    * creating web/templates/item/index.html.eex
+    * creating web/templates/item/new.html.eex
+    * creating web/templates/item/show.html.eex
+    * creating web/views/item_view.ex
+    * creating test/controllers/item_controller_test.exs
+
+Add the resource to the browser scope in `web/router.ex`:
+
+    scope "/", Demo do
+      pipe_through :browser # Use the default browser stack
+      get "/", PageController, :index
+      resources "/items", ItemController    
+    end
+
+Update the repository by running migrations:
+
+    $ mix ecto.migrate
+    Compiling 9 files (.ex)
+    ...
+
+Run the server:
+
+    $ mix phoenix.server
+
+Browse:
+
+    http://localhost:4000/items
+
+You now see "Listing items" and "Name", "Description", "New item".
+
