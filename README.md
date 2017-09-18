@@ -19,7 +19,7 @@ This README is a tutorial.
 See:
 
   * http://elixir-lang.org
-  * http://exponential.io/blog/2015/02/21/install-itemgresql-on-mac-os-x-via-brew/
+  * http://exponential.io/blog/2015/02/21/install-postgresql-on-mac-os-x-via-brew/
 
 Setup on macOS using brew:
 
@@ -27,9 +27,10 @@ Setup on macOS using brew:
     $ brew install elixir
     $ brew install erlang
     $ brew install node
-    $ brew install itemgresql
-    $ brew services start itemgresql
-    $ export PATH="$PATH:/usr/local/Cellar/elixir/1.3.2/bin"
+    $ brew install postgresql
+    $ brew services start postgresql
+    $ path=$(brew info elixir | awk '/Cellar/ {print $1}')
+    $ export PATH="$PATH:$path/bin"
 
 Setup on Ubuntu using apt:
 
@@ -77,8 +78,8 @@ Try running the app with Interactive Elixir:
 
 The default database configuration is:
 
-    username: "itemgres",
-    password: "itemgres",
+    username: "postgres",
+    password: "postgres",
     database: "demo_dev",
     hostname: "localhost",
 
@@ -104,7 +105,7 @@ If you get this error:
 
 Then do troubleshooting here:
 
-  * https://github.com/sixarm/sixarm_itempostgresql_help
+  * https://github.com/sixarm/sixarm_postgresql_help
 
 
 ## Run the server
