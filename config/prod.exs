@@ -56,13 +56,13 @@ import_config "prod.secret.exs"
 
 # Gigalixir deployment
 
-config :demo, DemoWeb.Endpoint,
+config :demo_elixir_phoenix, DemoElixirPhoenixWeb.Endpoint,
   http: [port: {:system, "PORT"}], # Possibly not needed, but doesn't hurt
   url: [host: System.get_env("APP_NAME") <> ".gigalixirapp.com", port: 80],
   secret_key_base: Map.fetch!(System.get_env(), "SECRET_KEY_BASE"),
   server: true
 
-config :gigalixir_getting_started, Demo.Repo,
+config :demo_elixir_phoenix, DemoElixirPhoenix.Repo,
   adapter: Ecto.Adapters.Postgres,
   url: System.get_env("DATABASE_URL"),
   ssl: true,

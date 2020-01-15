@@ -168,7 +168,7 @@ mix phx.server
 If you get this error:
 
 ```sh
-Error: Brunch 2+ requires node.js v4 or higher ...
+Error: Brunch 2+ requires node.js v4 or higher …
 Upgrade node or use older brunch for old node.js: npm i -g brunch@1
 ```
 
@@ -322,7 +322,7 @@ Install:
 
 ```sh
 pip3 install -U gigalixir --ignore-installed six
-...
+…
 ```
 
 For help see https://gigalixir.readthedocs.io/en/latest/main.html
@@ -337,7 +337,7 @@ gigalixir signup
 GIGALIXIR Terms of Service: https://www.gigalixir.com/terms
 GIGALIXIR Privacy Policy: https://www.gigalixir.com/privacy
 Do you accept the Terms of Service and Privacy Policy? [y/N]: y
-Email: ...
+Email: …
 ```
 
 If you already use Gigalixir, then sign in:
@@ -364,13 +364,13 @@ Gigalixir has options for how to set up an app. For this demo, we will choose th
 Append `config/prod.exs` with:
 
 ```elixir
-config :demo, DemoWeb.Endpoint,
+config :demo_elixir_phoenix, DemoElixirPhoenixWeb.Endpoint,
   http: [port: {:system, "PORT"}], # Possibly not needed, but doesn't hurt
   url: [host: System.get_env("APP_NAME") <> ".gigalixirapp.com", port: 80],
   secret_key_base: Map.fetch!(System.get_env(), "SECRET_KEY_BASE"),
   server: true
 
-config :gigalixir_getting_started, Demo.Repo,
+config :demo_elixir_phoenix, DemoElixirPhoenix.Repo,
   adapter: Ecto.Adapters.Postgres,
   url: System.get_env("DATABASE_URL"),
   ssl: true,
@@ -452,6 +452,32 @@ gigalixir	https://git.gigalixir.com/demo-elixir-phoenix.git/ (fetch)
 gigalixir	https://git.gigalixir.com/demo-elixir-phoenix.git/ (push)
 ```
 
+### Verify production runs locally
+
+Verify the production settings are able to run locally:
+
+```sh
+APP_NAME=demo-phoenix-elixir \
+SECRET_KEY_BASE="$(mix phx.gen.secret)" \
+MIX_ENV=prod DATABASE_URL="postgresql://postgres:postgres@localhost:5432/foo" \
+PORT=4000 \
+mix phx.server
+```
+
+If you get this error:
+
+```sh
+** (Mix) Could not compile dependency :telemetry
+```
+
+Then refresh the dependency, then retry.
+
+```sh
+mix deps.clean telemetry
+mix deps.get
+```
+
+
 ### Deploy
 
 
@@ -465,7 +491,7 @@ If you get this error:
 
 ```sh
 -----> Unable to select a buildpack
-...
+…
  ! [remote rejected] master -> master (pre-receive hook declined)
 error: failed to push some refs to 'https://git.gigalixir.com/demo-elixir-phoenix.git/'
 ```
