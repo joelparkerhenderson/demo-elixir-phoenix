@@ -1,0 +1,43 @@
+<h1>Show User</h1>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @user.name %>
+  </li>
+
+  <li>
+    <strong>Email:</strong>
+    <%= @user.email %>
+  </li>
+
+  <li>
+    <strong>Phone:</strong>
+    <%= @user.phone %>
+  </li>
+
+  <li>
+    <strong>Web:</strong>
+    <%= @user.web %>
+  </li>
+
+  <li>
+    <strong>Birth date:</strong>
+    <%= @user.birth_date %>
+  </li>
+
+  <li>
+    <strong>Photo uri:</strong>
+    <%= @user.photo_uri %>
+  </li>
+
+  <li>
+    <strong>About:</strong>
+    <%= @user.about %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.user_path(@conn, :edit, @user) %></span>
+<span><%= link "Back", to: Routes.user_path(@conn, :index) %></span>

@@ -90,8 +90,8 @@ mix archive.install hex phx_new
 New:
 
 ```sh
-mix phx.new demo
-cd demo
+mix phx.new demo_elixir_phoenix
+cd demo_elixir_phoenix
 ```
 
 Try running the app with a server:
@@ -114,7 +114,7 @@ The default database configuration is:
 ```txt
 username: "postgres",
 password: "postgres",
-database: "demo_dev",
+database: "demo_elixir_phoenix_dev",
 hostname: "localhost",
 ```
 
@@ -128,7 +128,7 @@ Run:
 
 ```sh
 mix ecto.create
-The database for Demo.Repo has been created
+The database for DemoElixirPhoenix.Repo has been created
 ```
 
 If you get this error:
@@ -142,7 +142,7 @@ Then it's likely you're running the command in the wrong directory; verify you'r
 If you get this error:
 
 ```sh
-** (Mix) The database for Demo.Repo couldn't be created: an exception was raised:
+** (Mix) The database for DemoElixirPhoenix.Repo couldn't be created: an exception was raised:
 ** (DBConnection.ConnectionError) tcp connect (localhost:5432): connection refused - :econnrefused
 ```
 
@@ -192,7 +192,9 @@ mix phx.gen.html Accounts User users \
     email:string \
     phone:string \
     web:string \
-    about:string
+    birth_date:date \
+    photo_uri:string \
+    about:text
 * creating lib/demo_web/controllers/user_controller.ex
 * creating lib/demo_web/templates/user/edit.html.eex
 * creating lib/demo_web/templates/user/form.html.eex
@@ -207,17 +209,38 @@ mix phx.gen.html Accounts User users \
 * injecting lib/demo/accounts.ex
 * creating test/demo/accounts_test.exs
 * injecting test/demo/accounts_test.exs
-
-Add the resource to your browser scope in lib/demo_web/router.ex:
-
-    resources "/users", UserController
-
-Remember to update your repository by running migrations:
-
-    $ mix ecto.migrate
 ```
 
-Add the resource to the browser scope in `web/router.ex`:
+
+We prefer our migration timestamps to come before the rest of the fields, so we edit the migration:
+
+```sh
+edit priv/repo/migrations/*__create_users.ex
+```
+
+Our result looks like this:
+
+```elixir
+defmodule DemoElixirPhoenix.Repo.Migrations.CreateUsers do
+  use Ecto.Migration
+
+  def change do
+    create table(:users) do
+      timestamps()
+      add :name, :string
+      add :email, :string
+      add :phone, :string
+      add :web, :string
+      add :birth_date, :date
+      add :photo_uri, :string
+      add :about, :text
+   end
+
+  end
+end
+```
+
+Add the resource to the browser scope in `lib/demo_elixir_phoenix_web/router.ex`:
 
 ```elixir
 scope "/", Demo do
@@ -227,21 +250,26 @@ scope "/", Demo do
 end
 ```
 
-Update the repository by running migrations:
+Migrate:
 
 ```sh
 mix ecto.migrate
-Compiling 9 files (.ex)
-...
+Generated demo_elixir_phoenix app
+
+[info]  == Running … DemoElixirPhoenix.Repo.Migrations.CreateUsers.change/0 forward
+
+[info]  create table users
+
+[info]  == Migrated … in 0.0s
 ```
 
 Run the server:
 
 ```sh
 mix phx.server
-...
+…
 [info] Access DemoWeb.Endpoint at http://localhost:4000
-...
+…
 ```
 
 Browse:
