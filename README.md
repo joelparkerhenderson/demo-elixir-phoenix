@@ -34,11 +34,18 @@ Setup on macOS using brew:
 
 ```sh
 brew update
-brew install elixir
 brew install erlang
+brew install elixir
 brew install node
 path=$(brew info elixir | awk '/Cellar/ {print $1}')
 export PATH="$PATH:$path/bin"
+```
+
+Verify Erlang:
+
+```sh
+erl --version
+Erlang/OTP 22 [erts-10.6.2] [source] [64-bit] [smp:4:4] [ds:4:4:10] [async-threads:1] [hipe] [dtrace]
 ```
 
 Verify Elixir:
@@ -50,13 +57,11 @@ Erlang/OTP 19 [erts-8.0.2] [source] [64-bit]
 Elixir 1.3.2
 ```
 
-Verify iex:
+Verify Node:
 
 ```sh
-iex
-iex(1)> 1 + 2
-2
-(to exit, type control-c twice)
+node --version
+v13.6.0
 ```
 
 Update `mix` which is the Elixir package manager:
@@ -328,7 +333,7 @@ For help see https://gigalixir.readthedocs.io/en/latest/main.html
 If you're new to Gigalixir, then create your account:
 
 ```sh
-gigalixir signup                                      
+gigalixir signup
 GIGALIXIR Terms of Service: https://www.gigalixir.com/terms
 GIGALIXIR Privacy Policy: https://www.gigalixir.com/privacy
 Do you accept the Terms of Service and Privacy Policy? [y/N]: y
@@ -340,7 +345,7 @@ If you already use Gigalixir, then sign in:
 ```sh
 gigalixir login
 Email: alice@example.com
-Password: 
+Password:
 Would you like us to save your api key to your ~/.netrc file? [Y/n]: Y
 Logged in as alice@example.com.
 ```
