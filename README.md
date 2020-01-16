@@ -384,7 +384,7 @@ Create file `elixir_buildpack.config` at the repo root and with the Exilir versi
 
 ```elixir
 elixir_version=1.9.4
-erlang_version=22.0
+erlang_version=22.2
 ```
 
 Create file `.buildpacks` with the buildpacks you want, such as:
