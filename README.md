@@ -490,10 +490,7 @@ git push gigalixir master
 If you get this error:
 
 ```sh
------> Unable to select a buildpack
-…
- ! [remote rejected] master -> master (pre-receive hook declined)
-error: failed to push some refs to 'https://git.gigalixir.com/demo-elixir-phoenix.git/'
+Unable to select a buildpack
 ```
 
 Then be sure you created a file `.buildpacks` in the project root directory.
@@ -505,3 +502,15 @@ remote: warning: You appear to have cloned an empty repository.
 ```
 
 Then double-check that you have committed all your files, and pushed them.
+
+If you get this error:
+
+```sh
+fatal: the remote end hung up unexpectedly
+```
+
+Then try using a larger buffer, such as:
+
+```sh
+  git config --global http.postBuffer 100000000
+```
