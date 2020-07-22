@@ -23,7 +23,7 @@ Demonstration of:
 
 ## Setup
 
-### Get Elixir, Erlang, Node
+### Get Elixir, Erlang, Node, PostgreSQL
 
 See:
 
@@ -37,6 +37,7 @@ brew update
 brew install erlang
 brew install elixir
 brew install node
+brew install postgresql
 path=$(brew info elixir | awk '/Cellar/ {print $1}')
 export PATH="$PATH:$path/bin"
 ```
@@ -60,6 +61,13 @@ Verify Node:
 ```sh
 node --version
 v14.5.0
+```
+
+Verify PostgreSQL:
+
+```sh
+psql --version
+psql (PostgreSQL) 12.3
 ```
 
 Update `mix` which is the Elixir package manager:
@@ -374,10 +382,9 @@ echo "erlang_version=23.0.2" >> elixir_buildpack.config
 echo "node_version=12.16.3" > phoenix_static_buildpack.config
 ```
 
-
-
-Verify that your versions are in the list of version support by the buildpack here:
+Optionally verify that your versions are in the list of version support by the buildpack here:
 https://github.com/HashNuke/heroku-buildpack-elixir#version-support
+
 
 Create file `.buildpacks` with the buildpacks you want, such as:
 
