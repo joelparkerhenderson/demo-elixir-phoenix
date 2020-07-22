@@ -77,7 +77,7 @@ mix local.hex --force
 * creating ~/.mix/archives/hex-0.20.5
 ```
 
-Optional: use NPM for assets:
+Optionally use NPM for assets:
 
 ```sh
 npm install --prefix assets
@@ -379,7 +379,7 @@ Create buildpack files at the repo root:
 ```elixir
 echo "elixir_version=1.10.4" > elixir_buildpack.config
 echo "erlang_version=23.0.2" >> elixir_buildpack.config
-echo "node_version=12.16.3" > phoenix_static_buildpack.config
+echo "node_version=14.5.0" > phoenix_static_buildpack.config
 ```
 
 Optionally verify that your versions are in the list of version support by the buildpack here:
