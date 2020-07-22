@@ -5,11 +5,6 @@
     <tr>
       <th>Name</th>
       <th>Email</th>
-      <th>Phone</th>
-      <th>Web</th>
-      <th>Birth date</th>
-      <th>Photo uri</th>
-      <th>About</th>
 
       <th></th>
     </tr>
@@ -19,11 +14,6 @@
     <tr>
       <td><%= user.name %></td>
       <td><%= user.email %></td>
-      <td><%= user.phone %></td>
-      <td><%= user.web %></td>
-      <td><%= user.birth_date %></td>
-      <td><%= user.photo_uri %></td>
-      <td><%= user.about %></td>
 
       <td>
         <span><%= link "Show", to: Routes.user_path(@conn, :show, user) %></span>

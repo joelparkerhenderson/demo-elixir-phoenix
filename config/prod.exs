@@ -25,11 +25,11 @@ config :logger, level: :info
 #       ...
 #       url: [host: "example.com", port: 443],
 #       https: [
-#         :inet6,
 #         port: 443,
 #         cipher_suite: :strong,
 #         keyfile: System.get_env("SOME_APP_SSL_KEY_PATH"),
-#         certfile: System.get_env("SOME_APP_SSL_CERT_PATH")
+#         certfile: System.get_env("SOME_APP_SSL_CERT_PATH"),
+#         transport_options: [socket_opts: [:inet6]]
 #       ]
 #
 # The `cipher_suite` is set to `:strong` to support only the
@@ -54,8 +54,6 @@ config :logger, level: :info
 # and configuration from environment variables.
 import_config "prod.secret.exs"
 
-# Gigalixir deployment
-
 config :demo_elixir_phoenix, DemoElixirPhoenixWeb.Endpoint,
   http: [port: {:system, "PORT"}], # Possibly not needed, but doesn't hurt
   url: [host: System.get_env("APP_NAME") <> ".gigalixirapp.com", port: 80],
@@ -67,4 +65,3 @@ config :demo_elixir_phoenix, DemoElixirPhoenix.Repo,
   url: System.get_env("DATABASE_URL"),
   ssl: true,
   pool_size: 2 # Free tier db only allows 4 connections. Rolling deploys need pool_size*(n+1) connections where n is the number of app replicas.
-

@@ -13,9 +13,10 @@ config :demo_elixir_phoenix,
 # Configures the endpoint
 config :demo_elixir_phoenix, DemoElixirPhoenixWeb.Endpoint,
   url: [host: "localhost"],
-  secret_key_base: "AadsFKYEwQ/RXizKBksqyJVWBs1UA6cMiMXfLzoHkTbmGnKW9ouVNEo1njSECpc9",
-  render_errors: [view: DemoElixirPhoenixWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: DemoElixirPhoenix.PubSub, adapter: Phoenix.PubSub.PG2]
+  secret_key_base: "OBbWwZBYwAD1CLXZsuiKY1buqf/edpwT8VfL7ZAw+1UD8jGqOGH9vdJktYaBEMyX",
+  render_errors: [view: DemoElixirPhoenixWeb.ErrorView, accepts: ~w(html json), layout: false],
+  pubsub_server: DemoElixirPhoenix.PubSub,
+  live_view: [signing_salt: "DWxOrTvj"]
 
 # Configures Elixir's Logger
 config :logger, :console,

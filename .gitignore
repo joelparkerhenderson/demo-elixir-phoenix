@@ -1,3 +1,19 @@
+# Ignore dot files by default, then accept specific files and patterns.
+.*
+!.gitignore
+!.*.gitignore
+!.*[-_.]example
+!.*[-_.]example[-_.]*
+!.*.gpg
+
+# Ignore env files by default, then accept specific files and patterns.
+env
+env[-_.]*
+!env[-_.]example
+!env[-_.]example[-_.]*
+!env[-_.]gpg
+!env[-_.]*.gpg
+
 # The directory Mix will write compiled artifacts to.
 /_build/
 

@@ -1,12 +1,12 @@
-defmodule DemoElixirPhoenix.Accounts do
+defmodule DemoElixirPhoenix.Account do
   @moduledoc """
-  The Accounts context.
+  The Account context.
   """
 
   import Ecto.Query, warn: false
   alias DemoElixirPhoenix.Repo
 
-  alias DemoElixirPhoenix.Accounts.User
+  alias DemoElixirPhoenix.Account.User
 
   @doc """
   Returns the list of users.
@@ -74,7 +74,7 @@ defmodule DemoElixirPhoenix.Accounts do
   end
 
   @doc """
-  Deletes a User.
+  Deletes a user.
 
   ## Examples
 
@@ -95,10 +95,10 @@ defmodule DemoElixirPhoenix.Accounts do
   ## Examples
 
       iex> change_user(user)
-      %Ecto.Changeset{source: %User{}}
+      %Ecto.Changeset{data: %User{}}
 
   """
-  def change_user(%User{} = user) do
-    User.changeset(user, %{})
+  def change_user(%User{} = user, attrs \\ %{}) do
+    User.changeset(user, attrs)
   end
 end

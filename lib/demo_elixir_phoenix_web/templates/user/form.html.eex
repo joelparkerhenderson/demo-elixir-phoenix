@@ -13,26 +13,6 @@
   <%= text_input f, :email %>
   <%= error_tag f, :email %>
 
-  <%= label f, :phone %>
-  <%= text_input f, :phone %>
-  <%= error_tag f, :phone %>
-
-  <%= label f, :web %>
-  <%= text_input f, :web %>
-  <%= error_tag f, :web %>
-
-  <%= label f, :birth_date %>
-  <%= date_select f, :birth_date %>
-  <%= error_tag f, :birth_date %>
-
-  <%= label f, :photo_uri %>
-  <%= text_input f, :photo_uri %>
-  <%= error_tag f, :photo_uri %>
-
-  <%= label f, :about %>
-  <%= textarea f, :about %>
-  <%= error_tag f, :about %>
-
   <div>
     <%= submit "Save" %>
   </div>

@@ -1,14 +1,14 @@
 defmodule DemoElixirPhoenixWeb.UserControllerTest do
   use DemoElixirPhoenixWeb.ConnCase
 
-  alias DemoElixirPhoenix.Accounts
+  alias DemoElixirPhoenix.Account
 
-  @create_attrs %{about: "some about", birth_date: ~D[2010-04-17], email: "some email", name: "some name", phone: "some phone", photo_uri: "some photo_uri", web: "some web"}
-  @update_attrs %{about: "some updated about", birth_date: ~D[2011-05-18], email: "some updated email", name: "some updated name", phone: "some updated phone", photo_uri: "some updated photo_uri", web: "some updated web"}
-  @invalid_attrs %{about: nil, birth_date: nil, email: nil, name: nil, phone: nil, photo_uri: nil, web: nil}
+  @create_attrs %{email: "some email", name: "some name"}
+  @update_attrs %{email: "some updated email", name: "some updated name"}
+  @invalid_attrs %{email: nil, name: nil}
 
   def fixture(:user) do
-    {:ok, user} = Accounts.create_user(@create_attrs)
+    {:ok, user} = Account.create_user(@create_attrs)
     user
   end
 
@@ -60,7 +60,7 @@ defmodule DemoElixirPhoenixWeb.UserControllerTest do
       assert redirected_to(conn) == Routes.user_path(conn, :show, user)
 
       conn = get(conn, Routes.user_path(conn, :show, user))
-      assert html_response(conn, 200) =~ "some updated about"
+      assert html_response(conn, 200) =~ "some updated email"
     end
 
     test "renders errors when data is invalid", %{conn: conn, user: user} do
@@ -83,6 +83,6 @@ defmodule DemoElixirPhoenixWeb.UserControllerTest do
 
   defp create_user(_) do
     user = fixture(:user)
-    {:ok, user: user}
+    %{user: user}
   end
 end
