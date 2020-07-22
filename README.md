@@ -699,3 +699,17 @@ Then install:
 ```sh
 npm install --prefix assets graphql
 ```
+
+If error:
+
+```sh
+remote: cp: cannot overwrite directory '/tmp/cache/node_modules/phoenix' with non-directory
+remote: cp: cannot overwrite directory '/tmp/cache/node_modules/phoenix_html' with non-directory
+```
+
+Then you're likely trying to upgrade from an older version of your app, or Node, to a newer version, and the remote setup has changed. To solve this, tell the deployment to clean the node cache. Edit the file `phoenix_static_buildpack.config`, add this one line below, do one successful deploy, then remove the line (or set to false):
+
+```ini
+clean_cache=true
+```
+
