@@ -605,7 +605,7 @@ git push gigalixir master
 
 ### Troubleshooting
 
-If this error:
+If error:
 
 ```sh
 Unable to select a buildpack
@@ -613,7 +613,7 @@ Unable to select a buildpack
 
 Then ensure you created a file `.buildpacks` in the project root directory.
 
-If this error:
+If error:
 
 ```sh
 remote: warning: You appear to have cloned an empty repository.
@@ -621,7 +621,7 @@ remote: warning: You appear to have cloned an empty repository.
 
 Then double-check that you have committed all your files, and pushed them.
 
-If this error:
+If error:
 
 ```sh
 fatal: the remote end hung up unexpectedly
@@ -633,7 +633,7 @@ Then try using a larger buffer, such as:
   git config --global http.postBuffer 100000000
 ```
 
-If this error:
+If error:
 
 ```
 npm ERR! Make sure you have the latest version of node.js and npm installed.
@@ -646,7 +646,7 @@ npm install --prefix assets npm
 npm update --prefix assets 
 ```
 
-If this error:
+If error:
 
 ```sh
 npm ERR! Failed at the @ deploy script 'webpack --mode production'.
@@ -687,7 +687,7 @@ Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!node_modules/s
         + 1 hidden module
 ```
 
-If this error:
+If error:
 
 ```sh
 express-graphql@0.11.0 requires a peer of graphql@^14.7.0 || ^15.3.0 but none is installed. 
