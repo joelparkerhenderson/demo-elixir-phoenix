@@ -214,14 +214,6 @@ npm install -g brunch
 ## Work on the app
 
 
-### Update
-
-Dependencies update:
-```sh
-mix deps.update --all
-npm update
-```
-
 ### Generate a resource
 
 Generate all the code for a complete HTML resource: ecto migration, ecto model, controller, view, and templates.
@@ -306,6 +298,45 @@ Browse:
  * http://localhost:4000/users
 
 You now see "Listing items" and "Name", "Description", "New item".
+
+
+## Update the app as needed
+
+Update Elixir dependencies:
+
+```sh
+mix deps.update --all
+```
+
+Update NPM:
+```sh
+npm update --prefix assets 
+```
+
+Verify buildpack:
+
+```sh
+cat elixir_buildpack.config
+```
+
+Output such as:
+
+```init
+elixir_version=1.10.4
+erlang_version=23.0.2
+```
+
+Verify buildpack:
+
+```
+cat phoenix_static_buildpack.config
+```
+
+Output such as:
+
+```ini
+node_version=14.5.0
+```
 
 
 ## Deploy via Gigalixir
@@ -611,8 +642,8 @@ npm ERR! Make sure you have the latest version of node.js and npm installed.
 Then update node, such as:
 
 ```sh
-npm install npm
-npm update
+npm install --prefix assets npm
+npm update --prefix assets 
 ```
 
 If this error:
