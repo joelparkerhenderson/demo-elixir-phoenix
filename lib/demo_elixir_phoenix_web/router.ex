@@ -16,8 +16,9 @@ defmodule DemoElixirPhoenixWeb.Router do
   scope "/", DemoElixirPhoenixWeb do
     pipe_through :browser
 
-    get "/", PageController, :index
     resources "/users", UserController
+
+    get "/", PageController, :index
   end
 
   # Other scopes may use custom stacks.

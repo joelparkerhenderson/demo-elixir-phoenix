@@ -4,26 +4,33 @@
 
 Demonstration of:
 
-* [Setup](#setup)
-  * [Get Elixir, Erlang, Node](#get-elixir-erlang-node)
-  * [Get PostgreSQL database](#get-postgresql-database)
-  * [Get Phoenix framework](#get-phoenix-framework)
-* [Create a new app](#create-a-new-app)
-  * [Mix a Phoenix new app](#mix-a-phoenix-new-app)
-  * [Create a database](#create-a-database)
-  * [Run the Phoenix server](#run-the-phoenix-server)
-* [Work on the app](#work-on-the-app)
-  * [Generate a resource](#generate-a-resource)
-  * [Change the logo](#change-the-logo)
-* [Deploy via Gigalixir](#deploy-via-gigalixir)
-  * [Sign up and sign in](#sign-up-and-sign-in)
-  * [Configure prod.exs](#configure-prod-exs)
-  * [Create buildpack](#create-buildpack)
+- [Setup](#setup)
+- [Get Erlang](#get-erlang)
+- [Get Elixir](#get-elixir)
+- [Get Node](#get-node)
+  - [Get PostgreSQL database](#get-postgresql-database)
+  - [Get Phoenix framework](#get-phoenix-framework)
+- [Create a new app](#create-a-new-app)
+  - [Mix a Phoenix new directory and app](#mix-a-phoenix-new-directory-and-app)
+  - [Create a database](#create-a-database)
+  - [Test](#test)
+  - [Run the Phoenix server](#run-the-phoenix-server)
+  - [Fixes](#fixes)
+- [Work on the app](#work-on-the-app)
+  - [Generate a resource](#generate-a-resource)
+- [Deploy via Gigalixir](#deploy-via-gigalixir)
+  - [Sign up and sign in](#sign-up-and-sign-in)
+  - [Configure prod.exs](#configure-prodexs)
+  - [Create buildpack](#create-buildpack)
+  - [Create the app](#create-the-app)
+  - [Create a database](#create-a-database-1)
+  - [Ignore files](#ignore-files)
+  - [Verify production runs locally](#verify-production-runs-locally)
+  - [Deploy](#deploy)
+  - [Troubleshooting](#troubleshooting)
 
 
 ## Setup
-
-### Get Elixir, Erlang, Node, PostgreSQL
 
 See:
 
@@ -34,103 +41,153 @@ Setup on macOS using brew:
 
 ```sh
 brew update
+```
+
+
+## Get Erlang
+
+Install:
+
+```sh
 brew install erlang
+```
+
+Verify:
+
+```sh
+erl --version
+Erlang/OTP 26 [erts-14.2.2] [source] [64-bit] [smp:10:10] [ds:10:10:10] [async-threads:1] [jit] [dtrace]
+```
+
+
+## Get Elixir
+
+Install:
+
+```sh
 brew install elixir
-brew install node
-brew install postgresql
+```
+
+Verify:
+
+```sh
+elixir --version
+Elixir 1.16.1 (compiled with Erlang/OTP 26)
+```
+
+Set path:
+
+```sh
 path=$(brew info elixir | awk '/Cellar/ {print $1}')
 export PATH="$PATH:$path/bin"
 ```
 
-Verify Erlang:
+
+## Get Node
+
+Install:
 
 ```sh
-erl --version
-Erlang/OTP 23 [erts-11.0.2] [source] [64-bit] [smp:4:4] [ds:4:4:10] [async-threads:1] [hipe] [dtrace]
+brew install node
 ```
 
-Verify Elixir:
-
-```sh
-elixir --version
-Elixir 1.10.4 (compiled with Erlang/OTP 23)
-```
-
-Verify Node:
+Verify:
 
 ```sh
 node --version
-v14.5.0
+v21.6.2
 ```
 
-Verify PostgreSQL:
+
+### Get PostgreSQL database
+
+Install:
+
+```sh
+brew install postgresql@16
+```
+
+Verify:
 
 ```sh
 psql --version
-psql (PostgreSQL) 12.3
+psql (PostgreSQL) 16.0
+```
+
+Start:
+
+```sh
+brew services start postgresql@16
+==> Successfully started `postgresql@16` (label: homebrew.mxcl.postgresql@16)
+```
+
+Brew automatically creates a superuser role named with your macOS username.
+
+Connect to the Postgres server by using the macOS user name and default database name:
+
+```sh
+psql --username $USER postgres
+```
+
+However, the macOS user name is not the default that the typical PostgreSQL documentation expects. 
+
+To make the local PostgreSQL more similar to the typical PostgreSQL documentation, create a new superuser role named "postgres" and generate a a strong password.
+
+Generate a strong password such as 32 hexadecimal digits:
+
+```sh
+printf "%s\n" $(LC_ALL=C < /dev/urandom tr -dc '0-9a-f' | head -c32)
+```
+
+Example output:
+
+```sh
+a9ed78cd8e4aa2bd2a37ad7319899106
+```
+
+```psql
+CREATE ROLE postgres WITH SUPERUSER CREATEDB CREATEROLE LOGIN ENCRYPTED PASSWORD 'a9ed78cd8e4aa2bd2a37ad7319899106';
+```
+
+
+### Get Phoenix framework
+
+Install the Phoenix new project generator:
+
+```sh
+mix archive.install hex phx_new
+* creating ~/.mix/archives/phx_new-1.7.11
 ```
 
 Update `mix` which is the Elixir package manager:
 
 ```sh
 mix local.hex --force
-* creating ~/.mix/archives/hex-0.20.5
+* creating .mix/archives/hex-2.0.6
 ```
 
-Optionally use NPM for assets:
-
-```sh
-npm install --prefix assets
-npm update --prefix assets
-```
-
-
-### Get PostgreSQL database
-
-```sh
-brew install postgresql
-brew services start postgresql
-```
-
-### Get Phoenix framework
-
-Get Phoenix:
-
-```sh
-mix archive.install hex phx_new
-```
 
 
 ## Create a new app
 
 
-### Mix a Phoenix new app
+### Mix a Phoenix new directory and app
 
 New:
 
 ```sh
-mix phx.new demo_elixir_phoenix
-cd demo_elixir_phoenix
-```
-
-Try running the app with a server:
-
-```sh
-mix phx.server
-```
-
-Try running the app with Interactive Elixir:
-
-```sh
-iex -S mix phx.server
+mix phx.new demo-elixir-phoenix --app demo_elixir_phoenix
+cd demo-elixir-phoenix
 ```
 
 
 ### Create a database
 
-The default database configuration is:
+The database configuration is in the file `config/dev.exs`.
 
-```txt
+The database configuration default is:
+
+```elixir
 username: "postgres",
 password: "postgres",
 database: "demo_elixir_phoenix_dev",
@@ -141,6 +198,12 @@ To change this:
 
 ```sh
 edit config/dev.exs
+```
+
+Change the password to use the generated password from the section above:
+
+```elixir
+password: "a9ed78cd8e4aa2bd2a37ad7319899106",
 ```
 
 Run:
@@ -167,7 +230,7 @@ If you get this error:
 
 Then do troubleshooting here:
 
-  * https://github.com/sixarm/sixarm_postgresql_help
+  * https://github.com/sixarm/sixarm-postgresql-help
 
 
 ### Test
@@ -175,7 +238,7 @@ Then do troubleshooting here:
 Run:
 
 ```
-mix text
+mix test
 Finished in 0.7 seconds
 19 tests, 0 failures
 ```
@@ -189,6 +252,19 @@ Run:
 mix phx.server
 [info] Running Demo.Endpoint with Cowboy using http://localhost:4000
 ```
+
+Browse:
+
+* [http://localhost:4000](http://localhost:4000)
+  
+You should see a welcome page.
+
+You can list the current routes:
+
+```sh
+mix phx.routes
+```
+
 
 ### Fixes
 
@@ -241,7 +317,7 @@ mix phx.gen.html Account User users \
 We prefer our migration timestamps to come before the rest of the fields, so we edit the migration:
 
 ```sh
-edit priv/repo/migrations/*_create_users.ex
+edit priv/repo/migrations/*_create_users.exs
 ```
 
 Our result looks like this:
@@ -252,22 +328,42 @@ defmodule DemoElixirPhoenix.Repo.Migrations.CreateUsers do
 
   def change do
     create table(:users) do
-      timestamps()
+      timestamps(type: :utc_datetime)
       add :name, :string
       add :email, :string
-   end
 
+      end
   end
 end
 ```
 
-Add the resource to the browser scope in `lib/demo_elixir_phoenix_web/router.ex`:
+See the router file `lib/demo_elixir_phoenix_web/router.ex`.
+
+The default is:
 
 ```elixir
-scope "/", DemoElixirPhoenixWeb do
-    pipe_through :browser # Use the default browser stack
-    get "/", PageController, :index
+  scope "/", DemoElixirPhoenixWeb do
+    pipe_through :browser
+
+    get "/", PageController, :home
+  end
+```
+
+Edit the router:
+
+```sh
+edit lib/demo_elixir_phoenix_web/router.ex`
+```
+
+Add the user resource to the browser scope:
+
+```elixir
+  scope "/", DemoElixirPhoenixWeb do
+    pipe_through :browser
+
     resources "/users", UserController
+
+    get "/", PageController, :index
 end
 ```
 
@@ -284,6 +380,12 @@ Generated demo_elixir_phoenix app
 [info]  == Migrated … in 0.0s
 ```
 
+Verify the user routes exist:
+
+```sh
+mix phoenix.routes
+```
+
 Run the server:
 
 ```sh
@@ -297,46 +399,10 @@ Browse:
 
  * http://localhost:4000/users
 
-You now see "Listing items" and "Name", "Description", "New item".
+You now see a users landing page, with text such as "Listing Users", "Name", "Email", etc.
 
 
-## Update the app as needed
-
-Update Elixir dependencies:
-
-```sh
-mix deps.update --all
-```
-
-Update NPM:
-```sh
-npm update --prefix assets 
-```
-
-Verify buildpack:
-
-```sh
-cat elixir_buildpack.config
-```
-
-Output such as:
-
-```init
-elixir_version=1.10.4
-erlang_version=23.0.2
-```
-
-Verify buildpack:
-
-```
-cat phoenix_static_buildpack.config
-```
-
-Output such as:
-
-```ini
-node_version=14.5.0
-```
+-->
 
 
 ## Deploy via Gigalixir
