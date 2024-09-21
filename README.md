@@ -2,200 +2,43 @@
 
 <img src="README.png" alt="Elixir + Phoenix" style="width: 100%;"/>
 
-Demonstration of Elixir Phoenix and how to get it up and running.
+Demonstration of Elixir Phoenix,  how to get it up and running, and [how to deploy via Gigalixir](README/deploy-via-gigalixir/).
 
-## Setup
 
-See:
+## Install Erlang, Elixir, Node, Postgres
+
+Introductory instructions:
 
   * http://elixir-lang.org
-  * http://exponential.io/blog/2015/02/21/install-postgresql-on-mac-os-x-via-brew/
+  * http://exponential.io/blog/2015/02/21/
 
+There are various ways to install:
 
-### Option: setup for macOS and braw
+  * [Install via asdf](README/install-via-asdf/) - for cross-platform developers
+  * [Install via brew](README/install-via-brew/) - for macOS developers who prefer brew
+  * [Install via kerl](README/install-via-kerl/) - wip
+  * [Install via source](README/install-via-source/) - wip
 
-For building:
-
-```sh
-brew install autoconf
-brew upgrade autoconf
-```
-
-For building with OpenSSL 3.0:
-
-```sh
-brew install openssl
-brew upgrade openssl
-```
-
-For building with wxWidgets (start observer or debugger). Note that you may need to select the right wx-config before installing Erlang. 
-
-```sh
-brew install wxwidgets
-brew upgrade wxwidgets
-```
-
-For building documentation and elixir reference builds: 
-
-```sh
-brew install libxslt fop
-brew upgrade libxslt fop
-```
-
-For using `asdf` to install more software:
-
-```sh
-brew install asdf
-brew upgrade asdf
-```
-
-
-## Get Erlang
-
-Erlang has a variety of ways to install it.
-
-2024-06-25: Erlang 27 is not yet supported by brew, or asdf, or mise, or kerl. Install via source fails due to path issues. Therefore we prefer install Erlang 26 via `brew` for the time being.
-
-
-### Option: install via source
-
-
-```sh
-wget https://github.com/erlang/otp/releases/download/OTP-27.0/otp_src_27.0.tar.gz
-tar xvf otp_src_27.0.tar.gz
-cd otp_src_27.0
-./configure && make && sudo make install
-```
-
-
-### Option: install via kerl
-
-Install `kerl` on macOS via brew:
-
-```sh
-brew install kerl
-brew upgrade kerl
-```
-
-Run:
-
-```sh
-kerl build 27.0 27.0
-```
-
-
-### Option: install via asdf 
-
-```sh
-asdf plugin add erlang
-asdf install erlang latest
-asdf local erlang latest
-```
-
-
-### Option: install via brew
-
-```sh
-brew install erlang
-brew upgrade erlang
-```
-
-
-### Verify
+Verify versions are at least these:
 
 ```sh
 erl --version
-Erlang/OTP 27 [erts-15.0] [source] [64-bit] [smp:10:10] [ds:10:10:10] [async-threads:1] [jit]
-```
+Erlang/OTP 27 …
 
-
-## Get Elixir
-
-
-### Option: install via asdf
-
-```sh
-asdf plugin add elixir
-asdf install elixir latest
-asdf local elixir latest
-```
-
-
-### Option: install via brew
-
-```sh
-brew install elixir
-brew upgrade elixir
-```
-
-
-### Verify
-
-```sh
 elixir --version
-Erlang/OTP 26 [erts-14.2.5] [source] [64-bit] [smp:10:10] [ds:10:10:10] [async-threads:1] [jit] [dtrace]
+Elixir 1.17.3 …
 
-Elixir 1.17.1 (compiled with Erlang/OTP 26)
-```
-
-Set path:
-
-```sh
-path=$(brew info elixir | awk '/Cellar/ {print $1}')
-export PATH="$PATH:$path/bin"
-```
-
-
-## Get Node
-
-Install:
-
-```sh
-brew install node
-brew upgrade node
-```
-
-Verify:
-
-```sh
-node --version
-v22.3.0
-```
-
-
-## Get PostgreSQL database
-
-Install:
-
-```sh
-brew install postgresql@16
-brew upgrade postgresql@16
-```
-
-Verify:
-
-```sh
 psql --version
-psql (PostgreSQL) 16.0
+psql (PostgreSQL) 16.4
+
+node --version
+v22.9.0
 ```
 
-Start:
-
-```sh
-brew services start postgresql@16
-==> Successfully started `postgresql@16` (label: homebrew.mxcl.postgresql@16)
-```
-
-Brew automatically creates a superuser role named with your macOS username.
-
-Verify you can cnnect to the Postgres server by using the macOS user name and default database name:
-
-```sh
-psql --username $USER postgres
-```
 
 
 ### Configure PostgresSQL database
+
 
 To make the local PostgreSQL setup more capable, and more specific for this demo, create a new role.
 
@@ -215,6 +58,36 @@ Example output:
 a9ed78cd8e4aa2bd2a37ad7319899106
 ```
 
+To make the local PostgreSQL setup more capable, and more specific for this demo, create a new role.
+
+* The role name is "demo_elixir_phoenix" because it matches this project name.
+
+* The role password can be a strong password because it is a good security practice.
+
+Generate a strong password such as 32 hexadecimal digits:
+
+```sh
+printf "%s\n" $(LC_ALL=C < /dev/urandom tr -dc '0-9a-f' | head -c32)
+```
+
+Example output:
+
+```sh
+a9ed78cd8e4aa2bd2a37ad7319899106
+```
+
+Connect via typical PostgreSQL options:
+
+```
+psql --username postgres postgres
+```
+
+Connect via macOS brew PostgreSQL options:
+
+```sh
+psql --username "$USER" postgres
+```
+
 Use psql to create the role:
 
 ```psql
@@ -226,10 +99,10 @@ Verify:
 ```psl
 postgres=# \du demo_elixir_phoenix
                 List of roles
-      Role name      | Attributes | Member of 
----------------------+------------+-----------
- demo_elixir_phoenix | Create DB  | {}
-````
+      Role name      | Attributes
+---------------------+------------
+ demo_elixir_phoenix | Create DB
+```
 
 
 ### Update mix
@@ -243,7 +116,7 @@ mix local.hex --force
 Output:
 
 ```sh
-* creating ~/.mix/archives/hex-2.1.1
+* creating …/.mix/archives/hex-2.1.1
 ```
 
 
