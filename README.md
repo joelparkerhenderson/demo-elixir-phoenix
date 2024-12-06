@@ -19,7 +19,7 @@ There are various ways to install:
   * [Install via kerl](README/install-via-kerl/) - wip
   * [Install via source](README/install-via-source/) - wip
 
-Verify versions are at least these:
+Verify the versions are at least these:
 
 ```sh
 erl --version
@@ -36,10 +36,38 @@ v22.9.0
 ```
 
 
+### Update mix
+
+Update `mix` which is the Elixir package manager:
+
+```sh
+mix local.hex --force --if-missing
+```
+
+Verify:
+
+```sh
+mix --version
+```
+
+Output:
+
+```txt
+* creating .mix/archives/hex-2.0.0
+```
+
+
+### Update
+
+Run:
+
+```sh
+mix deps.update --all
+```
+
 
 ### Configure PostgresSQL database
 
-
 To make the local PostgreSQL setup more capable, and more specific for this demo, create a new role.
 
 * The role name is "demo_elixir_phoenix" because it matches this project name.
@@ -54,25 +82,7 @@ printf "%s\n" $(LC_ALL=C < /dev/urandom tr -dc '0-9a-f' | head -c32)
 
 Example output:
 
-```sh
-a9ed78cd8e4aa2bd2a37ad7319899106
-```
-
-To make the local PostgreSQL setup more capable, and more specific for this demo, create a new role.
-
-* The role name is "demo_elixir_phoenix" because it matches this project name.
-
-* The role password can be a strong password because it is a good security practice.
-
-Generate a strong password such as 32 hexadecimal digits:
-
-```sh
-printf "%s\n" $(LC_ALL=C < /dev/urandom tr -dc '0-9a-f' | head -c32)
-```
-
-Example output:
-
-```sh
+```txt
 a9ed78cd8e4aa2bd2a37ad7319899106
 ```
 
@@ -105,21 +115,6 @@ postgres=# \du demo_elixir_phoenix
 ```
 
 
-### Update mix
-
-Update `mix` which is the Elixir package manager:
-
-```sh
-mix local.hex --force
-```
-
-Output:
-
-```sh
-* creating …/.mix/archives/hex-2.1.1
-```
-
-
 ### Get Phoenix framework
 
 Install the Phoenix new project generator:
@@ -137,7 +132,7 @@ Output:
 Verify:
 
 ```sh
-mix phx.new -v​
+ mix phx.new --version
 ```
 
 Output:
@@ -156,7 +151,54 @@ New:
 
 ```sh
 mix phx.new demo-elixir-phoenix --app demo_elixir_phoenix
+```
+
+Output:
+
+```txt
+We are almost there! The following steps are missing:
+
+    $ cd demo_elixir_phoenix
+
+Then configure your database in config/dev.exs and run:
+
+    $ mix ecto.create
+
+Start your Phoenix app with:
+
+    $ mix phx.server
+
+You can also run your app inside IEx (Interactive Elixir) as:
+
+    $ iex -S mix phx.server
+```
+
+Change to:
+
+```sh
 cd demo-elixir-phoenix
+```
+
+Try running the app with a server:
+
+```sh
+mix phx.server
+```
+
+Try running the app with Interactive Elixir:
+
+```sh
+iex -S mix phx.server
+```
+
+
+### Install assets
+
+Optionally use PNPM or NPM for assets:
+
+```sh
+pnpm install --prefix assets
+pnpm update --prefix assets
 ```
 
 
@@ -246,8 +288,9 @@ Done in 166ms.
 Browse:
 
 * [http://localhost:4000](http://localhost:4000)
-  
+
 You should see a welcome page.
+
 
 ### Fixes
 
@@ -295,7 +338,6 @@ Output:
   GET   /live/longpoll                         Phoenix.LiveView.Socket
   POST  /live/longpoll                         Phoenix.LiveView.Socket
 ```
-
 
 
 ### Generate a resource
@@ -380,7 +422,7 @@ Add the user resource to the browser scope:
 ```elixir
   scope "/", DemoElixirPhoenixWeb do
     pipe_through :browser
-    
+
     resources "/users", UserController
 
     get "/", PageController, :home
@@ -464,4 +506,44 @@ Output from server console:
 SELECT u0."id", u0."name", u0."email", u0."inserted_at", u0."updated_at" FROM "users" AS u0 []
 ↳ DemoElixirPhoenixWeb.UserController.index/2, at: lib/demo_elixir_phoenix_web/controllers/user_controller.ex:8
 [info] Sent 200 in 48ms
+```
+
+
+
+## Update the app as needed
+
+Update Elixir dependencies:
+
+```sh
+mix deps.update --all
+```
+
+Update NPM:
+```sh
+npm update --prefix assets
+```
+
+Verify buildpack:
+
+```sh
+cat elixir_buildpack.config
+```
+
+Output such as:
+
+```init
+elixir_version=1.10.4
+erlang_version=23.0.2
+```
+
+Verify buildpack:
+
+```
+cat phoenix_static_buildpack.config
+```
+
+Output such as:
+
+```ini
+node_version=14.5.0
 ```

@@ -34,9 +34,21 @@ brew:
 	brew install wxwidgets
 	brew upgrade wxwidgets
 
+	# For building PostgreSQL
+	brew install gcc readline zlib curl ossp-uuid icu4c pkg-config
+	brew update gcc readline zlib curl ossp-uuid icu4c pkg-config
+
 	# For building documentation and elixir reference builds
 	brew install libxslt fop
 	brew upgrade libxslt fop
+
+	# Erlang
+	brew install erlang
+	brew upgrade erlang
+
+	# Elixir
+	brew install elixir
+	brew upgrade elixir
 
 	# For PostgreSQL database
 	brew install postgresql

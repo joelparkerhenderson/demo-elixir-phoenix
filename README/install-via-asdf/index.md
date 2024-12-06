@@ -7,7 +7,7 @@ make asdf
 ```
 
 
-## Install Erlang via asdf 
+## Install Erlang via asdf
 
 Run:
 

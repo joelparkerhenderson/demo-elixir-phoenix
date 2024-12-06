@@ -14,14 +14,14 @@ pip3 install gigalixir --user --ignore-installed six
 Make sure the executable is in your path, if it isn’t already.
 
 ```sh
-echo "export PATH=\$PATH:$(python3 -m site --user-base)/bin" >> ~/.profile  
+echo "export PATH=\$PATH:$(python3 -m site --user-base)/bin" >> ~/.profile
 source ~/.profile
 ```
 
 Verify:
 
 ```sh
-gigalixir version  
+gigalixir version
 1.10.0
 ```
 
@@ -172,8 +172,8 @@ To create a free database:
 
 ```sh
 gigalixir pg:create --free
-A word of caution: Free tier databases are not suitable for production 
-and migrating from a free db to a standard db is not trivial. 
+A word of caution: Free tier databases are not suitable for production
+and migrating from a free db to a standard db is not trivial.
 Do you wish to continue? [y/N]: y
 {
   "app_name": "demo-elixir-phoenix",
@@ -324,7 +324,7 @@ Then update node, such as:
 
 ```sh
 npm install --prefix assets npm
-npm update --prefix assets 
+npm update --prefix assets
 ```
 
 If error:
@@ -371,7 +371,7 @@ Child mini-css-extract-plugin node_modules/css-loader/dist/cjs.js!node_modules/s
 If error:
 
 ```sh
-express-graphql@0.11.0 requires a peer of graphql@^14.7.0 || ^15.3.0 but none is installed. 
+express-graphql@0.11.0 requires a peer of graphql@^14.7.0 || ^15.3.0 but none is installed.
 You must install peer dependencies yourself.
 ```
 

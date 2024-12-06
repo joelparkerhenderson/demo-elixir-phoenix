@@ -39,7 +39,6 @@ Append the path to the `PKG_CONFIG_PATH` environment variable:
 export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:/opt/homebrew/opt/openssl@3/lib/pkgconfig/"
 ```
 
-
 If you ever get this error message:
 
 ```sh
@@ -57,7 +56,7 @@ Then figure out what's wrong with your OpenSSL installation.
 
 ### For documentation
 
-For building documentation and elixir reference builds: 
+For building documentation and elixir reference builds:
 
 ```sh
 brew install libxslt fop
@@ -93,7 +92,7 @@ export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:/opt/homebrew/bin/pkg-config:$(brew --p
 
 ### For wxWidgets
 
-For building with wxWidgets (start observer or debugger). Note that you may need to select the right wx-config before installing Erlang. 
+For building with wxWidgets (start observer or debugger). Note that you may need to select the right wx-config before installing Erlang.
 
 ```sh
 brew install wxwidgets
@@ -115,8 +114,15 @@ Run:
 
 ```sh
 brew install erlang
+brew upgrade erlang
 ```
 
+Verify Erlang:
+
+```sh
+erl --version
+Erlang/OTP 25 [erts-13.1.3] [source] [64-bit] [smp:10:10] [ds:10:10:10] [async-threads:1] [jit] [dtrace]
+```
 
 ## Install Elixir via brew
 
@@ -130,8 +136,23 @@ brew upgrade elixir
 Set path:
 
 ```sh
-path=$(brew info elixir | awk '/Cellar/ {print $1}')
-export PATH="$PATH:$path/bin"
+path=$(brew --cellar elixir)
+version=$(brew list --versions elixir | head -1 | awk '{print $2}')
+export PATH="$PATH:$path/$version/bin"
+```
+
+Verify:
+
+```sh
+elixir --version
+```
+
+Output:
+
+```txt
+Erlang/OTP 27 [erts-15.1.2] [source] [64-bit] [smp:10:10] [ds:10:10:10] [async-threads:1] [jit] [dtrace]
+
+Elixir 1.17.3 (compiled with Erlang/OTP 26)
 ```
 
 
