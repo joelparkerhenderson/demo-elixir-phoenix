@@ -1,11 +1,10 @@
-# Install via adsf
+# Install via asdf
 
 Shortcut:
 
 ```sh
 make asdf
 ```
-
 
 ## Install Erlang via asdf
 
@@ -20,16 +19,15 @@ asdf local erlang latest
 Success looks like:
 
 ```sh
-Erlang/OTP 27.1 (asdf_27.1) has been successfully built
+Erlang/OTP 28 …
 ```
 
 Verify:
 
 ```sh
 erl --version
-Erlang/OTP 27 [erts-15.0] [source] [64-bit] [smp:10:10] [ds:10:10:10] [async-threads:1] [jit]
+Erlang/OTP 28 …
 ```
-
 
 ## Install Elixir via asdf
 
@@ -45,10 +43,9 @@ Verify:
 
 ```sh
 elixir --version
-Erlang/OTP 27 [erts-15.1] [source] [64-bit] [smp:10:10] [ds:10:10:10] [async-threads:1] [jit]
-Elixir 1.17.3 (compiled with Erlang/OTP 27)
+Erlang/OTP 28 …
+Elixir 1.17.3 (compiled with Erlang/OTP 28)
 ```
-
 
 ## Install Node JavaScript via asdf
 
@@ -64,9 +61,8 @@ Verify:
 
 ```sh
 node --version
-v22.9.0
+v24.7.0
 ```
-
 
 ## Install PostgreSQL database via asdf
 
@@ -122,5 +118,5 @@ psql postgres
 Verify you can connect to the Postgres server by using defaults:
 
 ```sh
-psql --username postgres postgres
+psql postgres postgres
 ```

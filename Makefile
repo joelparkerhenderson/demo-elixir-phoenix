@@ -20,6 +20,28 @@ asdf:
 	asdf install nodejs latest
 	asdf local nodejs latest
 
+.PHONY: mise
+mise:
+	# Erlang
+	mise plugin add erlang
+	mise install erlang latest
+	mise local erlang latest
+
+	# Elixir
+	mise plugin add elixir
+	mise install elixir latest
+	mise local elixir latest
+
+	# Postgres
+	mise plugin add postgres
+	mise install postgres latest
+	mise local postgres latest
+
+	# Node
+	mise plugin add nodejs
+	mise install nodejs latest
+	mise local nodejs latest
+
 .PHONY: brew
 brew:
 	# For building
@@ -51,13 +73,9 @@ brew:
 	brew upgrade elixir
 
 	# For PostgreSQL database
-	brew install postgresql
-	brew upgrade postgresql
+	brew install postgresql@17
+	brew upgrade postgresql@17
 
 	# For front end JavaScript development
 	brew install node
 	brew upgrade node
-
-	# For using `asdf` to install more software
-	brew install asdf
-	brew upgrade asdf

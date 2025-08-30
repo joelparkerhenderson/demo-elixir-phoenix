@@ -5,7 +5,8 @@
     "dictionaries": [],
     "words": [
         "buildpack",
-        "gigalixir"
+        "gigalixir",
+        "psql"
     ],
     "ignoreWords": [],
     "import": []

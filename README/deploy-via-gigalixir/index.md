@@ -33,7 +33,6 @@ gigalixir --help
 
 For docs: https://gigalixir.com/docs/
 
-
 ### Sign up and sign in
 
 If you're new to Gigalixir, then create your account:
@@ -62,7 +61,6 @@ Verify:
 gigalixir account
 ```
 
-
 ### Configure prod.exs
 
 Gigalixir has options for how to set up an app. For this demo, we will choose the simplest additional option, which is to do deployments via Mix (rather than Distillery which is more sophisticated) and by using the Gigalixir database free tier.
@@ -83,7 +81,6 @@ config :demo_elixir_phoenix, DemoElixirPhoenix.Repo,
   pool_size: 2 # Free tier db only allows 4 connections. Rolling deploys need pool_size*(n+1) connections where n is the number of app replicas.
 ```
 
-
 ### Create buildpack
 
 Create buildpack files at the repo root:
@@ -97,7 +94,6 @@ echo "node_version=14.5.0" > phoenix_static_buildpack.config
 Optionally verify that your versions are in the list of version support by the buildpack here:
 https://github.com/HashNuke/heroku-buildpack-elixir#version-support
 
-
 Create file `.buildpacks` with the buildpacks you want, such as:
 
 ```txt
@@ -105,7 +101,6 @@ https://github.com/HashNuke/heroku-buildpack-elixir
 https://github.com/gjaldon/heroku-buildpack-phoenix-static
 https://github.com/gigalixir/gigalixir-buildpack-mix.git
 ```
-
 
 ### Create the app
 
@@ -149,7 +144,6 @@ Output:
 ]
 ```
 
-
 Verify the git remote exists:
 
 ```sh
@@ -162,7 +156,6 @@ Output:
 gigalixir	https://git.gigalixir.com/demo-elixir-phoenix.git/ (fetch)
 gigalixir	https://git.gigalixir.com/demo-elixir-phoenix.git/ (push)
 ```
-
 
 ### Create a database
 
@@ -221,7 +214,6 @@ To connect via psql console:
 psql $DATABASE_URL
 ```
 
-
 ### Ignore files
 
 We choose to omit typical dot files and typical environment files.
@@ -245,7 +237,6 @@ env[-_.]*
 !env[-_.]gpg
 !env[-_.]*.gpg
 ```
-
 
 ### Verify production runs locally
 
@@ -273,16 +264,13 @@ mix deps.clean telemetry
 mix deps.get
 ```
 
-
 ### Deploy
-
 
 Build and deploy:
 
 ```sh
 git push gigalixir master
 ```
-
 
 ### Troubleshooting
 

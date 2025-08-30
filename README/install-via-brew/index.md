@@ -6,9 +6,14 @@ Shortcut:
 make brew
 ```
 
-
 ## Preflight
 
+Brew update & upgrade:
+
+```sh
+brew update
+brew upgrade
+```
 
 ### For building
 
@@ -16,8 +21,8 @@ Install:
 
 ```sh
 brew install autoconf
+brew upgrade autoconf
 ```
-
 
 ### For building with OpenSSL
 
@@ -25,6 +30,7 @@ Install:
 
 ```sh
 brew install openssl
+brew upgrade openssl
 ```
 
 Find the path:
@@ -53,21 +59,14 @@ checking for CRYPTO_new_ex_data in -lcrypto... no
 
 Then figure out what's wrong with your OpenSSL installation.
 
-
 ### For documentation
 
 For building documentation and elixir reference builds:
 
 ```sh
 brew install libxslt fop
+brew upgrade libxslt fop
 ```
-
-For using `asdf` to install more software:
-
-```sh
-brew install asdf
-```
-
 
 ### For PostgreSQL
 
@@ -75,6 +74,7 @@ Install:
 
 ```sh
 brew install gcc readline zlib curl ossp-uuid icu4c pkg-config
+brew upgrade gcc readline zlib curl ossp-uuid icu4c pkg-config
 ```
 
 You might need:
@@ -89,15 +89,14 @@ You might need to append package configuration paths:
 export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:/opt/homebrew/bin/pkg-config:$(brew --prefix openssl)/lib/pkgconfig/:$(brew --prefix icu4c)/lib/pkgconfig:$(brew --prefix curl)/lib/pkgconfig:$(brew --prefix zlib)/lib/pkgconfig"
 ```
 
-
 ### For wxWidgets
 
 For building with wxWidgets (start observer or debugger). Note that you may need to select the right wx-config before installing Erlang.
 
 ```sh
 brew install wxwidgets
+brew upgrade wxwidgets
 ```
-
 
 ### Upgrade
 
@@ -106,7 +105,6 @@ To upgrade any time:
 ```sh
 brew upgrade
 ```
-
 
 ## Install Erlang via brew
 
@@ -150,11 +148,10 @@ elixir --version
 Output:
 
 ```txt
-Erlang/OTP 27 [erts-15.1.2] [source] [64-bit] [smp:10:10] [ds:10:10:10] [async-threads:1] [jit] [dtrace]
+Erlang/OTP 28 [erts-15.1.2] [source] [64-bit] [smp:10:10] [ds:10:10:10] [async-threads:1] [jit] [dtrace]
 
 Elixir 1.17.3 (compiled with Erlang/OTP 26)
 ```
-
 
 ## Install Node JavaScript via brew
 
@@ -169,9 +166,8 @@ Verify:
 
 ```sh
 node --version
-v22.9.0
+v24.7.0
 ```
-
 
 ## Install PostgreSQL database via brew
 
@@ -200,5 +196,5 @@ The Brew installation automatically creates a superuser role named with your mac
 Verify you can connect to the Postgres server by using your macOS user name and default database name:
 
 ```sh
-psql --username "$USER" postgres
+psql postgres "$USER"
 ```
