@@ -1,16 +1,19 @@
-<.header>
-  User <%= @user.id %>
-  <:subtitle>This is a user record from your database.</:subtitle>
-  <:actions>
-    <.link href={~p"/users/#{@user}/edit"}>
-      <.button>Edit user</.button>
-    </.link>
-  </:actions>
-</.header>
+<Layouts.app flash={@flash}>
+  <.header>
+    User {@user.id}
+    <:subtitle>This is a user record from your database.</:subtitle>
+    <:actions>
+      <.button navigate={~p"/users"}>
+        <.icon name="hero-arrow-left" />
+      </.button>
+      <.button variant="primary" navigate={~p"/users/#{@user}/edit?return_to=show"}>
+        <.icon name="hero-pencil-square" /> Edit user
+      </.button>
+    </:actions>
+  </.header>
 
-<.list>
-  <:item title="Name"><%= @user.name %></:item>
-  <:item title="Email"><%= @user.email %></:item>
-</.list>
-
-<.back navigate={~p"/users"}>Back to users</.back>
+  <.list>
+    <:item title="Name">{@user.name}</:item>
+    <:item title="Email">{@user.email}</:item>
+  </.list>
+</Layouts.app>

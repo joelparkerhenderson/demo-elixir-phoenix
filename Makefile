@@ -79,3 +79,13 @@ brew:
 	# For front end JavaScript development
 	brew install node
 	brew upgrade node
+
+.PHONY: clean
+clean:
+	rm -rf assets 
+	rm -rf lib 
+	rm -rf priv
+	rm -rf support 
+	rm -rf test
+	rm -rf mix.exs 
+	rm -rf .formatter.exs

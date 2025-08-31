@@ -38,12 +38,11 @@ defmodule DemoElixirPhoenixWeb do
 
   def controller do
     quote do
-      use Phoenix.Controller,
-        formats: [:html, :json],
-        layouts: [html: DemoElixirPhoenixWeb.Layouts]
+      use Phoenix.Controller, formats: [:html, :json]
+
+      use Gettext, backend: DemoElixirPhoenixWeb.Gettext
 
       import Plug.Conn
-      import DemoElixirPhoenixWeb.Gettext
 
       unquote(verified_routes())
     end
@@ -51,8 +50,7 @@ defmodule DemoElixirPhoenixWeb do
 
   def live_view do
     quote do
-      use Phoenix.LiveView,
-        layout: {DemoElixirPhoenixWeb.Layouts, :app}
+      use Phoenix.LiveView
 
       unquote(html_helpers())
     end
@@ -81,14 +79,17 @@ defmodule DemoElixirPhoenixWeb do
 
   defp html_helpers do
     quote do
+      # Translation
+      use Gettext, backend: DemoElixirPhoenixWeb.Gettext
+
       # HTML escaping functionality
       import Phoenix.HTML
-      # Core UI components and translation
+      # Core UI components
       import DemoElixirPhoenixWeb.CoreComponents
-      import DemoElixirPhoenixWeb.Gettext
 
-      # Shortcut for generating JS commands
+      # Common modules used in templates
       alias Phoenix.LiveView.JS
+      alias DemoElixirPhoenixWeb.Layouts
 
       # Routes generation with the ~p sigil
       unquote(verified_routes())

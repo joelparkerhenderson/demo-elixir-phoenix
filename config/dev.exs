@@ -2,8 +2,8 @@ import Config
 
 # Configure your database
 config :demo_elixir_phoenix, DemoElixirPhoenix.Repo,
-  username: "demo_elixir_phoenix",
-  password: "a9ed78cd8e4aa2bd2a37ad7319899106",
+  username: "demo_elixir_phoenix_dev_owner",
+  password: "9bd8e43be0fb613d063189c90af2be21",
   hostname: "localhost",
   database: "demo_elixir_phoenix_dev",
   stacktrace: true,
@@ -19,11 +19,11 @@ config :demo_elixir_phoenix, DemoElixirPhoenix.Repo,
 config :demo_elixir_phoenix, DemoElixirPhoenixWeb.Endpoint,
   # Binding to loopback ipv4 address prevents access from other machines.
   # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
-  http: [ip: {127, 0, 0, 1}, port: 4000],
+  http: [ip: {127, 0, 0, 1}, port: String.to_integer(System.get_env("PORT") || "4000")],
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
-  secret_key_base: "K17LoAjf/cctJwk3wv+qWB6I7G4s7BqLDsdD5W2g59KdXXsPbPXRqsIabJMH2oOe",
+  secret_key_base: "aGIEUdC/fmmxHTBqtSiNXTvOn91P5oN0IPxIfqSR399+iuq/nCOKp71qze45Q5e3",
   watchers: [
     esbuild: {Esbuild, :install_and_run, [:demo_elixir_phoenix, ~w(--sourcemap=inline --watch)]},
     tailwind: {Tailwind, :install_and_run, [:demo_elixir_phoenix, ~w(--watch)]}
@@ -55,10 +55,11 @@ config :demo_elixir_phoenix, DemoElixirPhoenixWeb.Endpoint,
 # Watch static and templates for browser reloading.
 config :demo_elixir_phoenix, DemoElixirPhoenixWeb.Endpoint,
   live_reload: [
+    web_console_logger: true,
     patterns: [
       ~r"priv/static/(?!uploads/).*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
-      ~r"lib/demo_elixir_phoenix_web/(controllers|live|components)/.*(ex|heex)$"
+      ~r"lib/demo_elixir_phoenix_web/(?:controllers|live|components|router)/?.*\.(ex|heex)$"
     ]
   ]
 
@@ -66,7 +67,7 @@ config :demo_elixir_phoenix, DemoElixirPhoenixWeb.Endpoint,
 config :demo_elixir_phoenix, dev_routes: true
 
 # Do not include metadata nor timestamps in development logs
-config :logger, :console, format: "[$level] $message\n"
+config :logger, :default_formatter, format: "[$level] $message\n"
 
 # Set a higher stacktrace during development. Avoid configuring such
 # in production as building large stacktraces may be expensive.
@@ -76,8 +77,10 @@ config :phoenix, :stacktrace_depth, 20
 config :phoenix, :plug_init_mode, :runtime
 
 config :phoenix_live_view,
-  # Include HEEx debug annotations as HTML comments in rendered markup
+  # Include debug annotations and locations in rendered markup.
+  # Changing this configuration will require mix clean and a full recompile.
   debug_heex_annotations: true,
+  debug_attributes: true,
   # Enable helpful, but potentially expensive runtime checks
   enable_expensive_runtime_checks: true
 

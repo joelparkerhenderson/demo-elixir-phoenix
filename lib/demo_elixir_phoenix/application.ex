@@ -12,8 +12,6 @@ defmodule DemoElixirPhoenix.Application do
       DemoElixirPhoenix.Repo,
       {DNSCluster, query: Application.get_env(:demo_elixir_phoenix, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: DemoElixirPhoenix.PubSub},
-      # Start the Finch HTTP client for sending emails
-      {Finch, name: DemoElixirPhoenix.Finch},
       # Start a worker by calling: DemoElixirPhoenix.Worker.start_link(arg)
       # {DemoElixirPhoenix.Worker, arg},
       # Start to serve requests, typically the last entry

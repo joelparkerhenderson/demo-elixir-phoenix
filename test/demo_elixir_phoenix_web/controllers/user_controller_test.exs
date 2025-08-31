@@ -79,6 +79,7 @@ defmodule DemoElixirPhoenixWeb.UserControllerTest do
 
   defp create_user(_) do
     user = user_fixture()
+
     %{user: user}
   end
 end

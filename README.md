@@ -19,23 +19,30 @@ There are various ways to install:
 * [Install via kerl](README/install-via-kerl/) - wip
 * [Install via source](README/install-via-source/) - wip
 
+Create database:
+
+* [Create database via PostgreSQL](README/create-database-via-postgresql/)
+
 Verify the versions are at least these:
 
 ```sh
 erl --version
-Erlang/OTP 28 …
+Erlang/OTP 28 
 
 elixir --version
 Elixir  1.18.4 …
 
-psql --version
-psql (PostgreSQL) 17.6
-
 node --version
 v24.7.0
+
+mix --version
+Mix 1.18.4
+
+psql --version
+psql (PostgreSQL) 17.6
 ```
 
-### Update mix
+### Update
 
 Update `mix` which is the Elixir package manager:
 
@@ -43,72 +50,10 @@ Update `mix` which is the Elixir package manager:
 mix local.hex --force --if-missing
 ```
 
-Verify:
-
-```sh
-mix --version
-```
-
-Output:
-
-```txt
-* creating .mix/archives/hex-2.0.0
-```
-
-### Update
-
-Run:
+Update dependencies:
 
 ```sh
 mix deps.update --all
-```
-
-### Configure PostgresSQL database
-
-To make the local PostgreSQL setup more capable, and more specific for this demo, create a new role.
-
-* The role name is "demo_elixir_phoenix" because it matches this project name.
-
-* The role password can be a strong password because it is a good security practice.
-
-Generate a strong password such as 32 hexadecimal digits:
-
-```sh
-printf "%s\n" $(LC_ALL=C < /dev/urandom tr -dc '0-9a-f' | head -c32)
-```
-
-Example output:
-
-```txt
-a9ed78cd8e4aa2bd2a37ad7319899106
-```
-
-Connect via typical PostgreSQL options:
-
-```sh
-psql postgres postgres
-```
-
-Connect via macOS brew PostgreSQL options:
-
-```sh
-psql postgres "$USER"
-```
-
-Use psql to create the role:
-
-```psql
-postgres=# CREATE ROLE demo_elixir_phoenix WITH CREATEDB LOGIN ENCRYPTED PASSWORD 'a9ed78cd8e4aa2bd2a37ad7319899106';
-```
-
-Verify:
-
-```psl
-postgres=# \du demo_elixir_phoenix
-                List of roles
-      Role name      | Attributes
----------------------+------------
- demo_elixir_phoenix | Create DB
 ```
 
 ### Get Phoenix framework
@@ -122,26 +67,26 @@ mix archive.install hex phx_new
 Output:
 
 ```txt
-* creating ~/.mix/archives/phx_new-1.7.14
+* creating ~/.mix/archives/phx_new-1.8.1
 ```
 
 Verify:
 
 ```sh
- mix phx.new --version
+mix phx.new --version
 ```
 
 Output:
 
 ```txt
-Phoenix installer v1.7.14
+Phoenix installer v1.8.1
 ```
 
 ## Create a new app
 
 ### Mix a Phoenix new directory and app
 
-New:
+Create a new directory using kebab case, and a new application using snake case::
 
 ```sh
 mix phx.new demo-elixir-phoenix --app demo_elixir_phoenix
@@ -185,16 +130,7 @@ Try running the app with Interactive Elixir:
 iex -S mix phx.server
 ```
 
-### Install assets
-
-Optionally use PNPM or NPM for assets:
-
-```sh
-pnpm install --prefix assets
-pnpm update --prefix assets
-```
-
-### Create a database
+### Configure the database
 
 Change the database configuration in the file `config/dev.exs`.
 
@@ -208,7 +144,7 @@ password: "postgres",
 Into the custom username and password:
 
 ```elixir
-username: "demo_elixir_phoenix",
+username: "demo_elixir_phoenix_owner",
 password: "a9ed78cd8e4aa2bd2a37ad7319899106",
 ```
 
@@ -240,13 +176,13 @@ If you get this error:
 
 Then do troubleshooting here:
 
-  * https://github.com/sixarm/sixarm-postgresql-help
+* <https://github.com/sixarm/sixarm-postgresql-help>
 
 ### Test
 
 Run:
 
-```
+```sh
 mix test
 ```
 
@@ -264,7 +200,9 @@ Run:
 
 ```sh
 mix phx.server
+```
 
+```stdout
 [info] Running DemoElixirPhoenixWeb.Endpoint with Bandit 1.5.5 at 127.0.0.1:4000 (http)
 [info] Access DemoElixirPhoenixWeb.Endpoint at http://localhost:4000
 [watch] build finished, watching for changes...
@@ -276,7 +214,7 @@ Done in 166ms.
 
 Browse:
 
-* [http://localhost:4000](http://localhost:4000)
+* <http://localhost:4000>
 
 You should see a welcome page.
 
@@ -347,40 +285,24 @@ Output:
 * creating lib/demo_elixir_phoenix_web/controllers/user_html.ex
 * creating test/demo_elixir_phoenix_web/controllers/user_controller_test.exs
 * creating lib/demo_elixir_phoenix/account/user.ex
-* creating priv/repo/migrations/20240625211751_create_users.exs
+* creating priv/repo/migrations/20250831141746_create_users.exs
 * creating lib/demo_elixir_phoenix/account.ex
 * injecting lib/demo_elixir_phoenix/account.ex
 * creating test/demo_elixir_phoenix/account_test.exs
 * injecting test/demo_elixir_phoenix/account_test.exs
 * creating test/support/fixtures/account_fixtures.ex
 * injecting test/support/fixtures/account_fixtures.ex
+
+Add the resource to your browser scope in lib/demo_elixir_phoenix_web/router.ex:
+
+    resources "/users", UserController
+
+Remember to update your repository by running migrations:
+
+    $ mix ecto.migrate
 ```
 
-### Reorder timestamps
-
-We prefer our migration timestamps to come before the rest of the fields, so we edit the migration:
-
-```sh
-edit priv/repo/migrations/*_create_users.exs
-```
-
-Our result looks like this:
-
-```elixir
-defmodule DemoElixirPhoenix.Repo.Migrations.CreateUsers do
-  use Ecto.Migration
-
-  def change do
-    create table(:users) do
-      timestamps(type: :utc_datetime)
-      add :name, :string
-      add :email, :string
-    end
-  end
-end
-```
-
-### Add the route
+### Add the resource
 
 See the router file `lib/demo_elixir_phoenix_web/router.ex`.
 
@@ -412,6 +334,30 @@ Add the user resource to the browser scope:
   end
 ```
 
+### Adjust migration timestamps
+
+We prefer our migration timestamps to come before the rest of the fields, so we edit the migration:
+
+```sh
+edit priv/repo/migrations/*_create_users.exs
+```
+
+Our result looks like this:
+
+```elixir
+defmodule DemoElixirPhoenix.Repo.Migrations.CreateUsers do
+  use Ecto.Migration
+
+  def change do
+    create table(:users) do
+      timestamps(type: :utc_datetime)
+      add :name, :string
+      add :email, :string
+    end
+  end
+end
+```
+
 ### Migrate
 
 Migrate:
@@ -420,16 +366,14 @@ Migrate:
 mix ecto.migrate
 ```
 
-Output:
+Output looks like:
 
 ```txt
-Generated demo_elixir_phoenix app
+15:20:46.244 [info] == Running 20250831141746 DemoElixirPhoenix.Repo.Migrations.CreateUsers.change/0 forward
 
-[info]  == Running … DemoElixirPhoenix.Repo.Migrations.CreateUsers.change/0 forward
+15:20:46.245 [info] create table users
 
-[info]  create table users
-
-[info]  == Migrated … in 0.0s
+15:20:46.248 [info] == Migrated 20250831141746 in 0.0s
 ```
 
 ### Verify routes
@@ -471,7 +415,7 @@ Done in 152ms.
 
 Browse:
 
- * http://localhost:4000/users
+* <http://localhost:4000/users>
 
 You now see a users landing page, with text such as "Listing Users", "Name", "Email", etc.
 
@@ -482,12 +426,10 @@ Output from server console:
 [debug] Processing with DemoElixirPhoenixWeb.UserController.index/2
   Parameters: %{}
   Pipelines: [:browser]
-[debug] QUERY OK source="users" db=0.4ms queue=0.5ms idle=974.7ms
+[debug] QUERY OK source="users" db=0.3ms queue=0.4ms idle=83.7ms
 SELECT u0."id", u0."name", u0."email", u0."inserted_at", u0."updated_at" FROM "users" AS u0 []
 ↳ DemoElixirPhoenixWeb.UserController.index/2, at: lib/demo_elixir_phoenix_web/controllers/user_controller.ex:8
-[info] Sent 200 in 48ms
 ```
-
 
 ## Update the app as needed
 
@@ -498,6 +440,7 @@ mix deps.update --all
 ```
 
 Update NPM:
+
 ```sh
 npm update --prefix assets
 ```
@@ -517,7 +460,7 @@ erlang_version=23.0.2
 
 Verify buildpack:
 
-```
+```sh
 cat phoenix_static_buildpack.config
 ```
 

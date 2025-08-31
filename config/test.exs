@@ -6,8 +6,8 @@ import Config
 # to provide built-in test partitioning in CI environment.
 # Run `mix help test` for more information.
 config :demo_elixir_phoenix, DemoElixirPhoenix.Repo,
-  username: "demo_elixir_phoenix",
-  password: "a9ed78cd8e4aa2bd2a37ad7319899106",
+  username: "demo_elixir_phoenix_test_owner",
+  password: "506aad765cec7b87ebcd8d653db1ea48",
   hostname: "localhost",
   database: "demo_elixir_phoenix_test#{System.get_env("MIX_TEST_PARTITION")}",
   pool: Ecto.Adapters.SQL.Sandbox,
@@ -17,7 +17,7 @@ config :demo_elixir_phoenix, DemoElixirPhoenix.Repo,
 # you can enable the server option below.
 config :demo_elixir_phoenix, DemoElixirPhoenixWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
-  secret_key_base: "wqy/PJdCB0AfeH14d0FmSpJQEwH5cmhCSd/06EqSXeZLWgbqqGNFniCiXQrgXDSX",
+  secret_key_base: "j88YAWRny6yGIGXAR5OJsiI/JA/IXcrocuUK+xGdGWsuZaiI+pmJYnYPQw9ZmC+z",
   server: false
 
 # In test we don't send emails
